@@ -18,6 +18,9 @@ export class Searchbar extends Component {
     if (this.state.searchQuery.trim() === '') {
       return toast('Please, enter your search query and try again!');
     }
+    // if (this.state.searchQuery.trim() === '') {
+    //   return toast('Please, enter another search query and try again!');
+    // }
     this.props.onSubmit(this.state.searchQuery);
     this.setState({ searchQuery: '' });
     evt.target.reset();

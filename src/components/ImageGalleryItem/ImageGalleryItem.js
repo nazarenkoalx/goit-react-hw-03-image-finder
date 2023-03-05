@@ -24,7 +24,7 @@ export class ImageGalleryItem extends Component {
           <GalleryImg
             onClick={this.showModalToggle}
             src={this.props.webformatURL}
-            alt=""
+            alt={this.props.tags}
             width="290"
           />
         </GalleryLi>
