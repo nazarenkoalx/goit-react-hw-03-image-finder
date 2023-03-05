@@ -8,3 +8,8 @@ export const GalleryList = styled.ul`
   align-items: center;
   padding: 20px 0px;
 `;
+
+export const EmptyGal = styled.div`
+  text-align: center;
+  padding: 100px;
+`;
