@@ -20,10 +20,7 @@ export class App extends Component {
       <>
         <Searchbar onSubmit={this.onSearchFormSubmit} />
         <Container>
-          <ImageGallery
-            query={this.state.searchQuery}
-            onLoading={this.onLoading}
-          />
+          <ImageGallery query={this.state.searchQuery} />
         </Container>
         <ToastContainer autoClose={3000} theme="dark" />
       </>
