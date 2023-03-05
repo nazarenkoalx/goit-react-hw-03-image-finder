@@ -3,7 +3,7 @@ import { CiSearch } from 'react-icons/ci';
 import { nanoid } from 'nanoid';
 import { Component } from 'react';
 import { toast } from 'react-toastify';
-
+import PropTypes from 'prop-types';
 export class Searchbar extends Component {
   state = {
     searchQuery: '',
@@ -18,9 +18,6 @@ export class Searchbar extends Component {
     if (this.state.searchQuery.trim() === '') {
       return toast('Please, enter your search query and try again!');
     }
-    // if (this.state.searchQuery.trim() === '') {
-    //   return toast('Please, enter another search query and try again!');
-    // }
     this.props.onSubmit(this.state.searchQuery);
     this.setState({ searchQuery: '' });
     evt.target.reset();
@@ -47,28 +44,6 @@ export class Searchbar extends Component {
   }
 }
 
-// export const Searchbar = ({ onSubmit }) => (
-//   <SearchbarHeader>
-//     <Formik
-//       initialValues={{
-//         searchQuery: '',
-//       }}
-//       onSubmit={(value, actions) => {
-//         console.log(value);
-//         if (Object.values(value) === '') {
-//           return alert('ti pidor');
-//         }
-//         onSubmit({ ...value });
-//         actions.resetForm();
-//       }}
-//     >
-//       <Form>
-//         <SearchButton type="submit">
-//           <CiSearch name="search loop" color="#fff" size="20px" />
-//         </SearchButton>
-//         <Field id={nanoid()} name="searchQuery" placeholder="dog" />
-//         <ErrorMessage name="searchQuery" component="span" />
-//       </Form>
-//     </Formik>
-//   </SearchbarHeader>
-// );
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

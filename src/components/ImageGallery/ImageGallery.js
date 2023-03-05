@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { GalleryList } from './ImageGallery.styled';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import PropTypes from 'prop-types';
 
 export class ImageGallery extends Component {
   render() {
@@ -22,8 +23,18 @@ export class ImageGallery extends Component {
             })}
           </GalleryList>
         )}
-        {this.props.children}
       </>
     );
   }
 }
+
+ImageGallery.propTypes = {
+  pictures: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};

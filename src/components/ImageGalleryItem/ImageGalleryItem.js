@@ -2,7 +2,7 @@ import { GalleryLi, GalleryImg } from './ImageGalleryItem.styled';
 import { Component } from 'react';
 import { Modal } from 'components/Modal/Modal';
 import { LargeImage } from 'components/LargeImage/LargeImage';
-
+import PropTypes from 'prop-types';
 export class ImageGalleryItem extends Component {
   state = {
     showModal: false,
@@ -32,3 +32,12 @@ export class ImageGalleryItem extends Component {
     );
   }
 }
+
+ImageGalleryItem.propTypes = {
+  picture: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+  }),
+};

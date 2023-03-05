@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -9,6 +9,7 @@ import { goSearch } from './api/GoSearch';
 import { Loader } from './Loader/Loader';
 import { Button } from './Button/Button';
 import { EmptyGal } from './ImageGallery/ImageGallery.styled';
+import { AppCustomStyle } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -18,12 +19,13 @@ export class App extends Component {
     page: 1,
     totalPages: 0,
     loading: false,
+    error: '',
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    const { searchQuery, page } = this.state;
+    const { searchQuery, page, error } = this.state;
     if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
-      this.setState({ loading: true });
+      this.setState({ loading: true, error: '' });
 
       await goSearch(searchQuery, page)
         .then(response => {
@@ -31,12 +33,19 @@ export class App extends Component {
             return {
               pictures: [...prevState.pictures, ...response.data.hits],
               totalHits: response.data.totalHits,
-              totalPages: Math.floor(response.data.totalHits / 12),
             };
           });
         })
-        .catch(error => console.log(error))
+        .catch(error =>
+          this.setState({
+            error: 'ooopsie, app crashed, we`re solving this issue write now',
+          })
+        )
         .finally(() => this.setState({ loading: false }));
+    }
+
+    if (error !== prevState.error && error) {
+      toast.error({ error });
     }
   }
 
@@ -50,22 +59,21 @@ export class App extends Component {
   };
 
   render() {
-    const { pictures, loading, totalPages, totalHits, page } = this.state;
+    const { pictures, loading, totalHits } = this.state;
     return (
-      <>
+      <AppCustomStyle>
         <Searchbar onSubmit={this.onSearchFormSubmit} />
         <Container>
           {totalHits === 0 && <EmptyGal>there are no images found</EmptyGal>}
-          {loading && page === 1 && <Loader />}
-          <ImageGallery pictures={pictures}>
-            {loading && <Loader />}
-            {totalPages !== page && totalPages !== 0 && (
-              <Button onLoadMoreClick={this.onLoadMoreClick} />
-            )}
-          </ImageGallery>
+          <ImageGallery pictures={pictures} />
+
+          {totalHits !== pictures.length && !loading && (
+            <Button onLoadMoreClick={this.onLoadMoreClick} />
+          )}
+          {loading && <Loader />}
         </Container>
         <ToastContainer autoClose={3000} theme="dark" />
-      </>
+      </AppCustomStyle>
     );
   }
 }
